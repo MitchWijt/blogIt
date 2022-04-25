@@ -18,7 +18,7 @@ public class UserController {
     }
 
     @GetMapping("/get-user-data/{slug}")
-    public User getUserData(@PathVariable String slug) {
+    public Users getUserData(@PathVariable String slug) {
         return userService.getUserData(slug);
     }
 }
