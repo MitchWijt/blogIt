@@ -23,7 +23,7 @@ public class BlogController {
             blogService.createBlog(blog);
 
             return Map.of("success", true);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage(), ex);
         }
     }
