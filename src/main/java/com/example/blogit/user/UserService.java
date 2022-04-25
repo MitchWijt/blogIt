@@ -1,15 +1,20 @@
 package com.example.blogit.user;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    public User getUserData(String slug) {
-        // we will need the slug when we are going to fetch from the DB.
+    private final UserRespository userRespository;
 
-        User user = new User("mitchel@wijt.net", "mitchelwijt", "test123", "https://image.good.com");
-        return user;
+    @Autowired
+    public UserService(UserRespository userRespository) {
+        this.userRespository = userRespository;
+    }
+
+    public Users getUserData(String slug) {
+        return userRespository.findBySlug(slug);
     }
 
 }

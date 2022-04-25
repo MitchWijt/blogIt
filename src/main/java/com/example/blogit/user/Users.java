@@ -2,17 +2,24 @@ package com.example.blogit.user;
 
 import com.example.blogit.utils.Utils;
 
+import javax.persistence.*;
 import java.util.UUID;
 
-public class User {
-    private final UUID uuid;
-    private final String email;
-    private final String username;
-    private final String password;
-    private final String slug;
-    private final String profilePicture;
+@Entity
+@Table
+public class Users {
+    @Id
+    private UUID uuid;
+    private String email;
+    private String username;
+    private String password;
+    private String slug;
+    private String profilePicture;
 
-    public User(String email, String username, String password, String profilePicture) {
+    public Users() {
+    }
+
+    public Users(String email, String username, String password, String profilePicture) {
         this.uuid = UUID.randomUUID();
         this.slug = Utils.generateSlugFromString(username);
         this.email = email;
