@@ -1,6 +1,7 @@
 package com.example.blogit.blog;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -9,8 +10,8 @@ import java.util.Optional;
 public class BlogService {
 
     public final BlogRepository blogRepository;
+    private final int blogPageSize = 20;
 
-    @Autowired
     public BlogService(BlogRepository blogRepository) {
         this.blogRepository = blogRepository;
     }
@@ -34,5 +35,11 @@ public class BlogService {
     public boolean blogWithTitleExists(String title) {
         Optional<Blog> blog = blogRepository.findByTitle(title);
         return blog.isPresent();
+    }
+
+    public BlogListDto getBlogs(int page) {
+        Page<Blog> blogPage = blogRepository.findAll(PageRequest.of(page, blogPageSize));
+        BlogListDto blogListDto = new BlogListDto(blogPage.getContent());
+        return blogListDto;
     }
 }
