@@ -24,4 +24,14 @@ public class BlogController {
     public BlogListDto getBlogs(@PathParam("page") int page) {
         return blogService.getBlogs(page);
     }
+
+    @GetMapping("/get-blogs/{authorId}")
+    public BlogListDto getBlogsFromAuthor(@PathVariable Long authorId, @PathParam("page") int page) {
+        return blogService.getBlogs(page, authorId);
+    }
+
+    @GetMapping("/get-single-blog/{uuid}")
+    public Blog getSingleBlog(@PathVariable String uuid) {
+        return blogService.getBlog(uuid);
+    }
 }

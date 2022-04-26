@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class BlogService {
@@ -31,8 +32,22 @@ public class BlogService {
         return blog.isPresent();
     }
 
+    private BlogListDto mapBlogsToBlogListDto(Page<Blog> blogs) {
+        return new BlogListDto(blogs.getContent(), blogs.isLast(), blogs.getTotalPages(), blogs.getNumber());
+    }
+
     public BlogListDto getBlogs(int page) {
         Page<Blog> blogPage = blogRepository.findAll(PageRequest.of(page, blogPageSize));
-        return new BlogListDto(blogPage.getContent(), blogPage.isLast(), blogPage.getTotalPages(), blogPage.getNumber());
+        return mapBlogsToBlogListDto(blogPage);
+    }
+
+    public BlogListDto getBlogs(int page, Long authorId) {
+        Page<Blog> blogPage = blogRepository.findAllByAuthorId(authorId, PageRequest.of(page, blogPageSize));
+        return mapBlogsToBlogListDto(blogPage);
+    }
+
+    public Blog getBlog(String blogUUID) {
+        UUID uuid = UUID.fromString(blogUUID);
+        return blogRepository.findBlogByUuid(uuid);
     }
 }

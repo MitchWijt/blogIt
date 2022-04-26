@@ -9,6 +9,8 @@ import java.util.UUID;
 @Table
 public class Users {
     @Id
+
+    private Long id;
     private UUID uuid;
     private String email;
     private String username;
@@ -50,6 +52,10 @@ public class Users {
 
     public String getSlug() {
         return slug;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override
