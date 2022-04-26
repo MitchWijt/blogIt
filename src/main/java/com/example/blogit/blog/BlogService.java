@@ -16,20 +16,14 @@ public class BlogService {
         this.blogRepository = blogRepository;
     }
 
-    public void createBlog(Blog blog) throws Exception {
+    public Blog createBlog(Blog blog) throws Exception {
         String title = blog.getTitle();
-        String content = blog.getContent();
-        String bannerImg = blog.getBannerImg();
-
-        if(title.equals("") || content.equals("") || bannerImg.equals("")) {
-            throw new Exception("Missing values for blog");
-        }
 
         if(blogWithTitleExists(title)) {
             throw new Exception("Blog already exists");
         }
 
-        blogRepository.save(blog);
+        return blogRepository.save(blog);
     }
 
     public boolean blogWithTitleExists(String title) {
@@ -39,7 +33,6 @@ public class BlogService {
 
     public BlogListDto getBlogs(int page) {
         Page<Blog> blogPage = blogRepository.findAll(PageRequest.of(page, blogPageSize));
-        BlogListDto blogListDto = new BlogListDto(blogPage.getContent());
-        return blogListDto;
+        return new BlogListDto(blogPage.getContent(), blogPage.isLast(), blogPage.getTotalPages(), blogPage.getNumber());
     }
 }
