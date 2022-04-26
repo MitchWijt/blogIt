@@ -1,5 +1,9 @@
 package com.example.blogit.blog;
 
+
+import com.example.blogit.user.UserDto;
+import com.example.blogit.user.Users;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -14,7 +18,13 @@ public class Blog {
     private UUID uuid;
 
     @NotNull
+    @Column(name = "author_id", nullable = false)
     private Long authorId;
+
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "author_id", insertable = false, updatable = false)
+    private Users author;
 
     @NotBlank
     private String title;
@@ -41,6 +51,11 @@ public class Blog {
         this.publishDate = publishDate;
     }
 
+    public Blog(Users author, Long authorId, String title, String content, String bannerImg, LocalDateTime publishDate) {
+        new Blog(authorId, title, content, bannerImg, publishDate);
+        this.author = author;
+    }
+
     public UUID getUuid() {
         return uuid;
     }
@@ -59,6 +74,17 @@ public class Blog {
 
     public String getBannerImg() {
         return bannerImg;
+    }
+
+    public UserDto getAuthor() {
+        if(author == null) return null;
+        return new UserDto(
+                author.getId(),
+                author.getUuid(),
+                author.getEmail(),
+                author.getUsername(),
+                author.getProfilePicture()
+        );
     }
 
     public LocalDateTime getPublishDate() {

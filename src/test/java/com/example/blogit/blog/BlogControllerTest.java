@@ -1,5 +1,6 @@
 package com.example.blogit.blog;
 
+import com.example.blogit.user.Users;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,8 @@ class BlogControllerTest {
     @Test
     public void shouldGetABlog() throws Exception {
         //given
-        var blog = new Blog(1L, "Drunk", "Drunk on a Journey", "someBannerImg", LocalDateTime.now());
+        var author = new Users("test@tester.com", "mitchelwijt", "test123", "profilePic");
+        var blog = new Blog(author,1L, "Drunk", "Drunk on a Journey", "someBannerImg", LocalDateTime.now());
         var blogListDTO = new BlogListDto(Collections.singletonList(blog), false, 1, 0);
 
         //Actual mocking
