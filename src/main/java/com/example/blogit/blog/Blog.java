@@ -51,6 +51,11 @@ public class Blog {
         this.publishDate = publishDate;
     }
 
+    public Blog(UUID uuid, Long authorId, String title, String content, String bannerImg, LocalDateTime publishDate) {
+        new Blog(authorId, title, content, bannerImg, publishDate);
+        this.uuid = uuid;
+    }
+
     public Blog(Users author, Long authorId, String title, String content, String bannerImg, LocalDateTime publishDate) {
         new Blog(authorId, title, content, bannerImg, publishDate);
         this.author = author;

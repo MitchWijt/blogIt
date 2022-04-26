@@ -32,7 +32,7 @@ public class BlogService {
         return blog.isPresent();
     }
 
-    private BlogListDto mapBlogsToBlogListDto(Page<Blog> blogs) {
+    public BlogListDto mapBlogsToBlogListDto(Page<Blog> blogs) {
         return new BlogListDto(blogs.getContent(), blogs.isLast(), blogs.getTotalPages(), blogs.getNumber());
     }
 
