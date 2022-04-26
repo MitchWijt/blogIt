@@ -19,7 +19,7 @@ public class BlogListDto {
         return blogs;
     }
 
-    public boolean isLastPage() {
+    public boolean getIsLastPage() {
         return isLastPage;
     }
 
