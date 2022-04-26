@@ -1,11 +1,9 @@
 package com.example.blogit.blog;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import javax.websocket.server.PathParam;
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/blog")
@@ -18,14 +16,8 @@ public class BlogController {
     }
 
     @PostMapping("/create")
-    public Map<String, Boolean> createBlog(@RequestBody Blog blog) {
-        try {
-            blogService.createBlog(blog);
-
-            return Map.of("success", true);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage(), ex);
-        }
+    public Blog createBlog(@Valid @RequestBody Blog blog) throws Exception {
+        return blogService.createBlog(blog);
     }
 
     @GetMapping("/get-blogs")

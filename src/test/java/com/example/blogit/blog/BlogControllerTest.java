@@ -42,7 +42,7 @@ class BlogControllerTest {
     public void shouldGetABlog() throws Exception {
         //given
         var blog = new Blog(1L, "Drunk", "Drunk on a Journey", "someBannerImg", LocalDateTime.now());
-        var blogListDTO = new BlogListDto(Collections.singletonList(blog));
+        var blogListDTO = new BlogListDto(Collections.singletonList(blog), false, 1, 0);
 
         //Actual mocking
         when(blogService.getBlogs(1)).thenReturn(blogListDTO);
@@ -55,6 +55,7 @@ class BlogControllerTest {
         //then
         var expectedBlog = om.writeValueAsString(blogListDTO);
         result
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(expectedBlog))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
