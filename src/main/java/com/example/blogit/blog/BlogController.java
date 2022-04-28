@@ -30,7 +30,7 @@ public class BlogController {
         return blogService.getBlogs(page, authorId);
     }
 
-    @GetMapping("/get-single-blog/{uuid}")
+    @GetMapping("/{uuid}")
     public Blog getSingleBlog(@PathVariable String uuid) {
         return blogService.getBlog(uuid);
     }

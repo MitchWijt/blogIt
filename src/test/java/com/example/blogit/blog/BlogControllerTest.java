@@ -22,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class BlogControllerTest {
-    //Lees ff over het verschil tussen Springboottest, mockMvc & webMvcTest
     @Autowired
     private MockMvc mockMvc;
 
@@ -46,7 +45,6 @@ class BlogControllerTest {
         var blog = new Blog(author,1L, "Drunk", "Drunk on a Journey", "someBannerImg", LocalDateTime.now());
         var blogListDTO = new BlogListDto(Collections.singletonList(blog), false, 1, 0);
 
-        //Actual mocking
         when(blogService.getBlogs(1)).thenReturn(blogListDTO);
 
         //when
