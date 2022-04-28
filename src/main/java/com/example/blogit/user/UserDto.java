@@ -1,28 +1,20 @@
 package com.example.blogit.user;
 
-import java.util.UUID;
-
 public class UserDto {
-    private Long id;
-    private UUID uuid;
     private String email;
     private String username;
+    private String slug;
     private String profilePicture;
 
-    public UserDto(Long id, UUID uuid, String email, String username, String profilePicture) {
-        this.id = id;
-        this.uuid = uuid;
+    public UserDto(String email, String username, String slug, String profilePicture) {
         this.email = email;
         this.username = username;
+        this.slug = slug;
         this.profilePicture = profilePicture;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public UUID getUuid() {
-        return uuid;
+    public String getSlug() {
+        return slug;
     }
 
     public String getEmail() {

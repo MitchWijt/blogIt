@@ -29,7 +29,6 @@ public class CommentController {
 
     @GetMapping("/{blogUUID}")
     public List<Comment> getComments(@PathVariable("blogUUID") UUID blogUUID) {
-        System.out.println(blogUUID);
         return commentService.getComments(blogUUID);
     }
 }

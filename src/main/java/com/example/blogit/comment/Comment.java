@@ -1,5 +1,7 @@
 package com.example.blogit.comment;
 
+import com.example.blogit.user.UserDto;
+import com.example.blogit.user.UserMapper;
 import com.example.blogit.user.Users;
 
 import javax.persistence.*;
@@ -68,13 +70,8 @@ public class Comment {
         return authorId;
     }
 
-    public CommentUserDto getAuthor() {
-        if(author == null) return null;
-        return new CommentUserDto(
-                author.getSlug(),
-                author.getProfilePicture(),
-                author.getUsername()
-        );
+    public UserDto getAuthor() {
+        return UserMapper.INSTANCE.userToUserDto(author);
     }
 
     public UUID getBlogUUID() {

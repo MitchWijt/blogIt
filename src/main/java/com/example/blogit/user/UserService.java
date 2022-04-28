@@ -15,15 +15,7 @@ public class UserService {
 
     public UserDto getUserData(String slug) {
         Users user = userRespository.findBySlug(slug);
-        UserDto userDto = new UserDto(
-                user.getId(),
-                user.getUuid(),
-                user.getEmail(),
-                user.getUsername(),
-                user.getProfilePicture()
-        );
-
-        return userDto;
+        return UserMapper.INSTANCE.userToUserDto(user);
     }
 
 

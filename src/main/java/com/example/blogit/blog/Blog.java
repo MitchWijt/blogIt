@@ -2,6 +2,7 @@ package com.example.blogit.blog;
 
 
 import com.example.blogit.user.UserDto;
+import com.example.blogit.user.UserMapper;
 import com.example.blogit.user.Users;
 
 import javax.persistence.*;
@@ -87,14 +88,7 @@ public class Blog {
     }
 
     public UserDto getAuthor() {
-        if(author == null) return null;
-        return new UserDto(
-                author.getId(),
-                author.getUuid(),
-                author.getEmail(),
-                author.getUsername(),
-                author.getProfilePicture()
-        );
+        return UserMapper.INSTANCE.userToUserDto(author);
     }
 
     public LocalDateTime getPublishDate() {

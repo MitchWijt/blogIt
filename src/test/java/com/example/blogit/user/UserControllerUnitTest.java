@@ -28,7 +28,8 @@ public class UserControllerUnitTest {
     @Test
     public void shouldGetUserData() throws Exception {
         Users user = new Users("test@tester.com", "testerman", "test123", "profilePictureLink");
-        when(userService.getUserData("testerman")).thenReturn(user);
+        UserDto userDto = UserMapper.INSTANCE.userToUserDto(user);
+        when(userService.getUserData("testerman")).thenReturn(userDto);
 
         var result = this.mockMvc
                 .perform(get("/api/user/get-user-data/{slug}", "testerman")
