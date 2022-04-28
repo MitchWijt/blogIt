@@ -10,11 +10,13 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Map;
+import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -84,5 +86,43 @@ public class BlogControllerUnitTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(expectedBlogList))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void shouldGetSingleBlog() throws Exception {
+        String uuid = UUID.randomUUID().toString();
+        Blog blog = new Blog(UUID.fromString(uuid), 1L, "Title", "Content", "BannerImg", LocalDateTime.now());
+
+        when(blogService.getBlog(uuid)).thenReturn(blog);
+
+        var result = this.mockMvc
+                .perform(get("/api/blog/" + uuid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                );
+
+        result
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().json(objectMapper.writeValueAsString(blog)))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void shouldReturnImgUrl() throws Exception{
+        String imgUrl = "https://images.unsplash.com/photo-1607729942333-d23c0790cdcc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=Mnw0MDI4OXwwfDF8c2VhcmNofDF8fEp1cGl0ZXJ8ZW58MHx8fHwxNjUxMTI2NTg3&ixlib=rb-1.2.1&q=80&w=1080";
+        Map<String, String> returnMap = Map.of("url", imgUrl);
+
+        when(blogService.getBannerImgUrl(any(String.class))).thenReturn(imgUrl);
+
+        var result = this.mockMvc
+                .perform(get("/api/blog/search-banner-img")
+                        .param("query", "blog title")
+                        .contentType(MediaType.APPLICATION_JSON)
+                );
+
+        result
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(returnMap)));
     }
 }

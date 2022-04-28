@@ -16,9 +16,9 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-
     @PostMapping("/create")
     public Comment createComment(@Valid @RequestBody Comment comment) {
+        System.out.println(comment.getId());
         return commentService.createComment(comment);
     }
 

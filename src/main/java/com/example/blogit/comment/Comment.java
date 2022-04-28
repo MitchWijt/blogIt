@@ -48,14 +48,14 @@ public class Comment {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Comment(Long id, Long authorId, String message) {
+    public Comment(Long authorId, String message, UUID blogUUID) {
         this.uuid = UUID.randomUUID();
         this.upvotes = 0;
         this.createdAt = LocalDateTime.now();
 
-        this.id = id;
         this.authorId = authorId;
         this.message = message;
+        this.blogUUID = blogUUID;
     }
 
     public Long getId() {
