@@ -32,7 +32,6 @@ public class Blog {
     @NotBlank
     private String content;
 
-    @NotBlank
     private String bannerImg;
 
     @NotNull
@@ -106,5 +105,9 @@ public class Blog {
                 ", bannerImg='" + bannerImg + '\'' +
                 ", publishDate=" + publishDate +
                 '}';
+    }
+
+    public void setBannerImg(String url) {
+        bannerImg = url;
     }
 }
