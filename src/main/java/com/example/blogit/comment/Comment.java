@@ -13,7 +13,7 @@ import java.util.UUID;
 public class Comment {
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE
+            strategy = GenerationType.IDENTITY
     )
     private Long id;
 
@@ -64,8 +64,17 @@ public class Comment {
         return uuid;
     }
 
-    public Users getAuthor() {
-        return author;
+    public Long getAuthorId() {
+        return authorId;
+    }
+
+    public CommentUserDto getAuthor() {
+        if(author == null) return null;
+        return new CommentUserDto(
+                author.getSlug(),
+                author.getProfilePicture(),
+                author.getUsername()
+        );
     }
 
     public UUID getBlogUUID() {
@@ -82,5 +91,9 @@ public class Comment {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public void setUpvotes(int upvotes) {
+        this.upvotes = upvotes;
     }
 }
