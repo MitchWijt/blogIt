@@ -1,5 +1,6 @@
 package com.example.blogit.blog;
 
+import com.example.blogit.lib.unsplash.Unsplash;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -11,10 +12,18 @@ import java.util.UUID;
 public class BlogService {
 
     public final BlogRepository blogRepository;
-    private final int blogPageSize = 20;
+    public final Unsplash unsplash;
 
-    public BlogService(BlogRepository blogRepository) {
+    private final int BLOG_PAGE_SIZE = 20;
+
+    public BlogService(BlogRepository blogRepository, Unsplash unsplash) {
         this.blogRepository = blogRepository;
+        this.unsplash = unsplash;
+    }
+
+    public String getBannerImgUrl(String query) {
+        if(query == null) return unsplash.getRandomPhoto();
+        return unsplash.getPhoto(query);
     }
 
     public Blog createBlog(Blog blog) throws Exception {
@@ -23,6 +32,9 @@ public class BlogService {
         if(blogWithTitleExists(title)) {
             throw new Exception("Blog already exists");
         }
+
+        String url = unsplash.getPhoto(title);
+        blog.setBannerImg(url);
 
         return blogRepository.save(blog);
     }
@@ -37,12 +49,12 @@ public class BlogService {
     }
 
     public BlogListDto getBlogs(int page) {
-        Page<Blog> blogPage = blogRepository.findAll(PageRequest.of(page, blogPageSize));
+        Page<Blog> blogPage = blogRepository.findAll(PageRequest.of(page, BLOG_PAGE_SIZE));
         return mapBlogsToBlogListDto(blogPage);
     }
 
     public BlogListDto getBlogs(int page, Long authorId) {
-        Page<Blog> blogPage = blogRepository.findAllByAuthorId(authorId, PageRequest.of(page, blogPageSize));
+        Page<Blog> blogPage = blogRepository.findAllByAuthorId(authorId, PageRequest.of(page, BLOG_PAGE_SIZE));
         return mapBlogsToBlogListDto(blogPage);
     }
 
