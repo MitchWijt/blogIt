@@ -34,11 +34,14 @@ public class Blog {
 
     private String bannerImg;
 
+    private int likes;
+
     @NotNull
     private LocalDateTime publishDate;
 
     public Blog() {
         this.uuid = UUID.randomUUID();
+        this.likes = 0;
     }
 
     public Blog(Long authorId, String title, String content, String bannerImg, LocalDateTime publishDate) {
@@ -48,16 +51,19 @@ public class Blog {
         this.content = content;
         this.bannerImg = bannerImg;
         this.publishDate = publishDate;
+        this.likes = 0;
     }
 
     public Blog(UUID uuid, Long authorId, String title, String content, String bannerImg, LocalDateTime publishDate) {
         new Blog(authorId, title, content, bannerImg, publishDate);
         this.uuid = uuid;
+        this.likes = 0;
     }
 
     public Blog(Users author, Long authorId, String title, String content, String bannerImg, LocalDateTime publishDate) {
         new Blog(authorId, title, content, bannerImg, publishDate);
         this.author = author;
+        this.likes = 0;
     }
 
     public UUID getUuid() {
@@ -93,6 +99,10 @@ public class Blog {
 
     public LocalDateTime getPublishDate() {
         return publishDate;
+    }
+
+    public int getLikes() {
+        return likes;
     }
 
     @Override

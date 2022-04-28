@@ -13,8 +13,17 @@ public class UserService {
         this.userRespository = userRespository;
     }
 
-    public Users getUserData(String slug) {
-        return userRespository.findBySlug(slug);
+    public UserDto getUserData(String slug) {
+        Users user = userRespository.findBySlug(slug);
+        UserDto userDto = new UserDto(
+                user.getId(),
+                user.getUuid(),
+                user.getEmail(),
+                user.getUsername(),
+                user.getProfilePicture()
+        );
+
+        return userDto;
     }
 
 
