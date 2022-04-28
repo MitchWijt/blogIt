@@ -28,6 +28,10 @@ public class Comment {
     @JoinColumn(name = "author_id", insertable = false, updatable = false)
     private Users author;
 
+    @NotNull
+    @Column(name = "blog_uuid", nullable = false)
+    private UUID blogUUID;
+
     @NotBlank
     private String message;
 
@@ -60,12 +64,12 @@ public class Comment {
         return uuid;
     }
 
-    public Long getAuthorId() {
-        return authorId;
-    }
-
     public Users getAuthor() {
         return author;
+    }
+
+    public UUID getBlogUUID() {
+        return blogUUID;
     }
 
     public String getMessage() {
