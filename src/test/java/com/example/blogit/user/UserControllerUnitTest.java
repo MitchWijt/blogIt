@@ -36,7 +36,7 @@ public class UserControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 );
 
-        String expectedUser = objectMapper.writeValueAsString(user);
+        String expectedUser = objectMapper.writeValueAsString(userDto);
         result.andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(expectedUser))
