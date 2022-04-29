@@ -15,6 +15,7 @@ import java.util.UUID;
 @Entity
 public class Blog {
     @Id
+    private Long id;
 
     private UUID uuid;
 
@@ -99,6 +100,10 @@ public class Blog {
         return likes;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "Blog{" +
@@ -113,5 +118,37 @@ public class Blog {
 
     public void setBannerImg(String url) {
         bannerImg = url;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
+    }
+
+    public void setAuthor(Users author) {
+        this.author = author;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public void setPublishDate(LocalDateTime publishDate) {
+        this.publishDate = publishDate;
     }
 }

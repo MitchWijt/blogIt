@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -12,13 +14,15 @@ import java.util.UUID;
 public class BlogService {
 
     public final BlogRepository blogRepository;
+    public final BlogTopicLinktableRepository blogTopicLinktableRepository;
     public final Unsplash unsplash;
 
     private final int BLOG_PAGE_SIZE = 20;
 
-    public BlogService(BlogRepository blogRepository, Unsplash unsplash) {
+    public BlogService(BlogRepository blogRepository, Unsplash unsplash, BlogTopicLinktableRepository blogTopicLinktableRepository) {
         this.blogRepository = blogRepository;
         this.unsplash = unsplash;
+        this.blogTopicLinktableRepository = blogTopicLinktableRepository;
     }
 
     public String getBannerImgUrl(String query) {
@@ -56,6 +60,18 @@ public class BlogService {
     public BlogListDto getBlogs(int page, Long authorId) {
         Page<Blog> blogPage = blogRepository.findAllByAuthorId(authorId, PageRequest.of(page, BLOG_PAGE_SIZE));
         return mapBlogsToBlogListDto(blogPage);
+    }
+
+    public List<Blog> getBlogs(String topicSlug) {
+        List<Blog> blogList = new ArrayList<>();
+        List<BlogTopicLinktable> blogTopicLinktableList = blogTopicLinktableRepository.findByTopic_Slug(topicSlug);
+
+        for (BlogTopicLinktable blogTopicLinktable : blogTopicLinktableList) {
+            Blog blog = blogTopicLinktable.getBlog();
+            blogList.add(blog);
+        }
+
+        return blogList;
     }
 
     public Blog getBlog(String blogUUID) {
