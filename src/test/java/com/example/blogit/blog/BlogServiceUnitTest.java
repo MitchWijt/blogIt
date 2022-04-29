@@ -1,5 +1,6 @@
 package com.example.blogit.blog;
 
+import com.example.blogit.lib.unsplash.Unsplash;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class BlogServiceUnitTest {
 
     @Autowired
     private BlogService blogService;
+
+    @MockBean
+    private Unsplash unsplash;
 
     @MockBean
     private BlogRepository blogRepository;

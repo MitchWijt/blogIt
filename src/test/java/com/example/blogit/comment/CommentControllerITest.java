@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.UUID;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -51,6 +52,20 @@ public class CommentControllerITest {
         String commentUUID = "304d919e-1f61-4684-991e-ab7fb189573e";
 
         var result = this.mockMvc.perform(put("/api/blog/comments/upvote/" + commentUUID)
+                .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        result.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+    }
+
+    @Test
+    public void shouldGetComment() throws Exception {
+        String commentUUID = "304d919e-1f61-4684-991e-ab7fb189573e";
+
+        var result = this.mockMvc.perform(get("/api/blog/comments/" + commentUUID)
                 .contentType(MediaType.APPLICATION_JSON)
         );
 
