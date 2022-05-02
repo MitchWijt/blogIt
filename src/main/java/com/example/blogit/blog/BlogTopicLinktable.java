@@ -3,6 +3,7 @@ package com.example.blogit.blog;
 import com.example.blogit.topic.Topic;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table
@@ -13,18 +14,18 @@ public class BlogTopicLinktable {
     )
     private Long id;
 
-    @Column(insertable = false, updatable = false)
+    @NotNull
     private Long blog_id;
 
-    @Column(insertable = false, updatable = false)
+    @NotNull
     private Long topic_id;
 
     @ManyToOne
-    @JoinColumn(name = "blog_id")
+    @JoinColumn(name = "blog_id", insertable = false, updatable = false)
     private Blog blog;
 
     @ManyToOne
-    @JoinColumn(name = "topic_id")
+    @JoinColumn(name = "topic_id", insertable = false, updatable = false)
     private Topic topic;
 
     public Topic getTopic() {
@@ -37,6 +38,11 @@ public class BlogTopicLinktable {
 
     public BlogTopicLinktable() {
 
+    }
+
+    public BlogTopicLinktable(Long blogId, Long topicId) {
+        this.blog_id = blogId;
+        this.topic_id = topicId;
     }
 
     public Long getId() {

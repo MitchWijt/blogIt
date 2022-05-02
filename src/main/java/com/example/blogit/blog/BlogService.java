@@ -33,12 +33,19 @@ public class BlogService {
         String title = blog.getTitle();
 
         // upload your own photo. If that happened this will contain a URL already.
-        // We need to grab the topicId and create an entry in the linktable that connects the blog and the linktable together.
 
         String url = unsplash.getPhoto(title);
         blog.setBannerImg(url);
 
-        return blogRepository.save(blog);
+        Blog createdBlog = blogRepository.save(blog);
+
+        Long blogId = createdBlog.getId();
+        Long topicId = createdBlog.getTopicId();
+
+        BlogTopicLinktable blogTopicLinktableEntry = new BlogTopicLinktable(blogId, topicId);
+        blogTopicLinktableRepository.save(blogTopicLinktableEntry);
+
+        return createdBlog;
     }
 
     public BlogListDto mapBlogsToBlogListDto(Page<Blog> blogs) {

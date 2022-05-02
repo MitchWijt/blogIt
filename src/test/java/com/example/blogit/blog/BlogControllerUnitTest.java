@@ -35,7 +35,7 @@ public class BlogControllerUnitTest {
 
     @Test
     public void ShouldReturnBlogOnCreation() throws Exception {
-        Blog blog = new Blog(1L, "A new blog", "this is a new blog", "bannerImgTest", LocalDateTime.now());
+        Blog blog = new Blog(1L, "A new blog", "this is a new blog", "bannerImgTest", 1L, LocalDateTime.now());
         when(blogService.createBlog(any(Blog.class))).thenReturn(blog);
 
 
@@ -54,7 +54,7 @@ public class BlogControllerUnitTest {
 
     @Test
     public void ShouldGetAllBlogsPaginated() throws Exception {
-        Blog blog = new Blog(1L, "Blog title", "this is a new blog", "bannerImgTest", LocalDateTime.now());
+        Blog blog = new Blog(1L, "Blog title", "this is a new blog", "bannerImgTest", 1L, LocalDateTime.now());
         BlogListDto blogListDto = new BlogListDto(Collections.singletonList(blog), true, 1, 0);
 
         when(blogService.getBlogs(0)).thenReturn(blogListDto);
@@ -75,7 +75,7 @@ public class BlogControllerUnitTest {
     @Test
     public void shouldGetSingleBlog() throws Exception {
         String uuid = UUID.randomUUID().toString();
-        Blog blog = new Blog(UUID.fromString(uuid), 1L, "Title", "Content", "BannerImg", LocalDateTime.now());
+        Blog blog = new Blog(UUID.fromString(uuid), 1L, "Title", "Content", "BannerImg", 1L, LocalDateTime.now());
 
         when(blogService.getBlog(uuid)).thenReturn(blog);
 

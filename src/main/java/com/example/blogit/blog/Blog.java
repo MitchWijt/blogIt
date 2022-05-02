@@ -15,9 +15,15 @@ import java.util.UUID;
 @Entity
 public class Blog {
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY
+    )
     private Long id;
 
     private UUID uuid;
+
+    @NotNull
+    private Long topicId;
 
     @NotNull
     @Column(name = "author_id", nullable = false)
@@ -45,24 +51,25 @@ public class Blog {
         this.likes = 0;
     }
 
-    public Blog(Long authorId, String title, String content, String bannerImg, LocalDateTime publishDate) {
+    public Blog(Long authorId, String title, String content, String bannerImg, Long topicId, LocalDateTime publishDate) {
         this.uuid = UUID.randomUUID();
         this.authorId = authorId;
         this.title = title;
         this.content = content;
         this.bannerImg = bannerImg;
+        this.topicId = topicId;
         this.publishDate = publishDate;
         this.likes = 0;
     }
 
-    public Blog(UUID uuid, Long authorId, String title, String content, String bannerImg, LocalDateTime publishDate) {
-        new Blog(authorId, title, content, bannerImg, publishDate);
+    public Blog(UUID uuid, Long authorId, String title, String content, String bannerImg, Long topicId, LocalDateTime publishDate) {
+        new Blog(authorId, title, content, bannerImg, topicId, publishDate);
         this.uuid = uuid;
         this.likes = 0;
     }
 
-    public Blog(Users author, Long authorId, String title, String content, String bannerImg, LocalDateTime publishDate) {
-        new Blog(authorId, title, content, bannerImg, publishDate);
+    public Blog(Users author, Long authorId, String title, String content, String bannerImg, Long topicId, LocalDateTime publishDate) {
+        new Blog(authorId, title, content, bannerImg, topicId, publishDate);
         this.author = author;
         this.likes = 0;
     }
@@ -101,6 +108,10 @@ public class Blog {
 
     public Long getId() {
         return id;
+    }
+
+    public Long getTopicId() {
+        return topicId;
     }
 
     @Override
