@@ -23,7 +23,6 @@ public class Blog {
     @Column(name = "author_id", nullable = false)
     private Long authorId;
 
-
     @ManyToOne(optional = false)
     @JoinColumn(name = "author_id", insertable = false, updatable = false)
     private Users author;

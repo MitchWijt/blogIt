@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -33,19 +32,13 @@ public class BlogService {
     public Blog createBlog(Blog blog) throws Exception {
         String title = blog.getTitle();
 
-        if(blogWithTitleExists(title)) {
-            throw new Exception("Blog already exists");
-        }
+        // upload your own photo. If that happened this will contain a URL already.
+        // We need to grab the topicId and create an entry in the linktable that connects the blog and the linktable together.
 
         String url = unsplash.getPhoto(title);
         blog.setBannerImg(url);
 
         return blogRepository.save(blog);
-    }
-
-    public boolean blogWithTitleExists(String title) {
-        Optional<Blog> blog = blogRepository.findByTitle(title);
-        return blog.isPresent();
     }
 
     public BlogListDto mapBlogsToBlogListDto(Page<Blog> blogs) {

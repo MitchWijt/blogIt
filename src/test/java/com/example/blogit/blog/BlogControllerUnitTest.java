@@ -53,22 +53,6 @@ public class BlogControllerUnitTest {
     }
 
     @Test
-    public void ShouldReturn400OnCreation() throws Exception {
-        Blog blog = new Blog(1L, "", "this is a new blog", "bannerImgTest", LocalDateTime.now());
-        when(blogService.createBlog(any(Blog.class))).thenReturn(blog);
-
-
-        var result = this.mockMvc
-                .perform(post("/api/blog/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(blog))
-                );
-
-        result.andDo(print())
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
     public void ShouldGetAllBlogsPaginated() throws Exception {
         Blog blog = new Blog(1L, "Blog title", "this is a new blog", "bannerImgTest", LocalDateTime.now());
         BlogListDto blogListDto = new BlogListDto(Collections.singletonList(blog), true, 1, 0);
