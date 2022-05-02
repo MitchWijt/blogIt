@@ -13,11 +13,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -36,12 +34,15 @@ public class BlogServiceUnitTest {
     @MockBean
     private BlogRepository blogRepository;
 
+    @MockBean
+    private BlogTopicLinktableRepository blogTopicLinktableRepository;
+
     @Autowired
     private ObjectMapper objectMapper;
 
     @Test
     public void shouldCreateBlog() throws Exception {
-        Blog blog = new Blog(1L, "This is a blog", "this is a test blog content", "bannerImg", LocalDateTime.now());
+        Blog blog = new Blog(1L, "This is a blog", "this is a test blog content", "bannerImg", 1L, LocalDateTime.now());
 
         when(blogRepository.save(any(Blog.class))).thenReturn(blog);
 
@@ -51,34 +52,8 @@ public class BlogServiceUnitTest {
     }
 
     @Test
-    public void shouldCreateBlogAndFail() throws Exception {
-        Blog blog = new Blog(1L, "This is a blog", "this is a test blog content", "bannerImg", LocalDateTime.now());
-
-        when(blogRepository.save(any(Blog.class))).thenReturn(blog);
-        when(blogRepository.findByTitle(any(String.class))).thenReturn(Optional.of(blog));
-
-        Exception exception = assertThrows(Exception.class, () -> {
-            blogService.createBlog(blog);
-        });
-
-
-        String expectedMessage = "Blog already exists";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-    }
-
-    @Test
-    public void blogWithTitleExistsShouldReturnBoolean() {
-        when(blogRepository.findByTitle(any(String.class))).thenReturn(Optional.empty());
-
-        boolean result = blogService.blogWithTitleExists("a new blog");
-        assertFalse(result);
-    }
-
-    @Test
     public void mapBlogsToBlogListDtoShouldReturnBlogListDto() {
-        Blog blog = new Blog(1L, "This is a blog", "this is a test blog content", "bannerImg", LocalDateTime.now());
+        Blog blog = new Blog(1L, "This is a blog", "this is a test blog content", "bannerImg", 1L, LocalDateTime.now());
         List<Blog> blogList = List.of(blog);
 
         Page<Blog> blogPage = new PageImpl<>(blogList);
@@ -93,6 +68,7 @@ public class BlogServiceUnitTest {
                 "This is a blog",
                 "this is a test blog content",
                 "bannerImg",
+                1L,
                 LocalDateTime.now()
         );
         List<Blog> blogList = List.of(blog);
@@ -116,6 +92,7 @@ public class BlogServiceUnitTest {
                 "This is a blog",
                 "this is a test blog content",
                 "bannerImg",
+                1L,
                 LocalDateTime.now()
         );
 

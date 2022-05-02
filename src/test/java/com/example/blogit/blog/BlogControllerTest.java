@@ -42,7 +42,7 @@ class BlogControllerTest {
     public void shouldGetABlog() throws Exception {
         //given
         var author = new Users("test@tester.com", "mitchelwijt", "test123", "profilePic");
-        var blog = new Blog(author,1L, "Drunk", "Drunk on a Journey", "someBannerImg", LocalDateTime.now());
+        var blog = new Blog(author,1L, "Drunk", "Drunk on a Journey", "someBannerImg", 1L, LocalDateTime.now());
         var blogListDTO = new BlogListDto(Collections.singletonList(blog), false, 1, 0);
 
         when(blogService.getBlogs(1)).thenReturn(blogListDTO);
