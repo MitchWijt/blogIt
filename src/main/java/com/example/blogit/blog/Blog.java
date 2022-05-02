@@ -39,6 +39,9 @@ public class Blog {
     @NotBlank
     private String content;
 
+    @NotBlank
+    private String slogan;
+
     private String bannerImg;
 
     private int likes;
@@ -112,6 +115,10 @@ public class Blog {
 
     public Long getTopicId() {
         return topicId;
+    }
+
+    public String getSlogan() {
+        return slogan;
     }
 
     @Override
