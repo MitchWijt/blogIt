@@ -1,9 +1,12 @@
 package com.example.blogit.blog;
 
+import com.example.blogit.lib.gcs.GCS;
 import com.example.blogit.lib.unsplash.Unsplash;
+import com.example.blogit.utils.Utils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,16 +15,19 @@ import java.util.UUID;
 @Service
 public class BlogService {
 
-    public final BlogRepository blogRepository;
-    public final BlogTopicLinktableRepository blogTopicLinktableRepository;
-    public final Unsplash unsplash;
+    private final BlogRepository blogRepository;
+    private final BlogTopicLinktableRepository blogTopicLinktableRepository;
+    private final Unsplash unsplash;
+    private final GCS gcs;
+
 
     private final int BLOG_PAGE_SIZE = 20;
 
-    public BlogService(BlogRepository blogRepository, Unsplash unsplash, BlogTopicLinktableRepository blogTopicLinktableRepository) {
+    public BlogService(BlogRepository blogRepository, Unsplash unsplash, BlogTopicLinktableRepository blogTopicLinktableRepository, GCS gcs) {
         this.blogRepository = blogRepository;
         this.unsplash = unsplash;
         this.blogTopicLinktableRepository = blogTopicLinktableRepository;
+        this.gcs = gcs;
     }
 
     public String getBannerImgUrl(String query) {
@@ -31,8 +37,6 @@ public class BlogService {
 
     public Blog createBlog(Blog blog) throws Exception {
         String title = blog.getTitle();
-
-        // upload your own photo. If that happened this will contain a URL already.
 
         String url = unsplash.getPhoto(title);
         blog.setBannerImg(url);
@@ -77,5 +81,16 @@ public class BlogService {
     public Blog getBlog(String blogUUID) {
         UUID uuid = UUID.fromString(blogUUID);
         return blogRepository.findBlogByUuid(uuid);
+    }
+
+    public Blog uploadBannerImage(String blogUUID, MultipartFile file) throws Exception {
+        if(file.isEmpty()) throw new Exception("No file was given");
+
+        String filename = blogUUID + "." + Utils.getExtensionFromFilename(file.getOriginalFilename());
+        String fileUrl = gcs.uploadFile("blogs/" + filename, file);
+
+        Blog blog = blogRepository.findBlogByUuid(UUID.fromString(blogUUID));
+        blog.setBannerImg(fileUrl);
+        return blogRepository.save(blog);
     }
 }

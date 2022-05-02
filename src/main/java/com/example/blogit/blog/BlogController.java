@@ -1,6 +1,7 @@
 package com.example.blogit.blog;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
@@ -46,5 +47,10 @@ public class BlogController {
     @GetMapping("/topic-blogs/{topicSlug}")
     public List<Blog> getBlogsFromTopic(@PathVariable String topicSlug) {
         return blogService.getBlogs(topicSlug);
+    }
+
+    @PutMapping("/upload-banner-image/{blogUUID}")
+    public Blog uploadBannerImage(@PathVariable String blogUUID, @RequestParam("banner") MultipartFile file) throws Exception {
+        return blogService.uploadBannerImage(blogUUID, file);
     }
 }
