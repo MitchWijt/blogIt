@@ -1,8 +1,6 @@
 package com.example.blogit.blog;
 
 
-import com.example.blogit.user.UserDto;
-import com.example.blogit.user.UserMapper;
 import com.example.blogit.user.Users;
 
 import javax.persistence.*;
@@ -43,10 +41,7 @@ public class Blog {
     private String slogan;
 
     private String bannerImg;
-
     private int likes;
-
-    @NotNull
     private LocalDateTime publishDate;
 
     public Blog() {
@@ -97,8 +92,8 @@ public class Blog {
         return bannerImg;
     }
 
-    public UserDto getAuthor() {
-        return UserMapper.INSTANCE.userToUserDto(author);
+    public Users getAuthor() {
+        return author;
     }
 
     public LocalDateTime getPublishDate() {
@@ -151,6 +146,14 @@ public class Blog {
 
     public void setAuthor(Users author) {
         this.author = author;
+    }
+
+    public void setTopicId(Long topicId) {
+        this.topicId = topicId;
+    }
+
+    public void setSlogan(String slogan) {
+        this.slogan = slogan;
     }
 
     public void setTitle(String title) {

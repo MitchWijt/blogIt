@@ -35,9 +35,7 @@ public class BlogService {
         return unsplash.getPhoto(query);
     }
 
-    public BlogDto createBlog(Blog blog) {
-        setBlogImageUrlFromTitle(blog);
-
+    public Blog createBlog(Blog blog) {
         Blog createdBlog = blogRepository.save(blog);
 
         Long blogId = createdBlog.getId();
@@ -46,30 +44,19 @@ public class BlogService {
         BlogTopicLinktable blogTopicLinktableEntry = new BlogTopicLinktable(blogId, topicId);
         blogTopicLinktableRepository.save(blogTopicLinktableEntry);
 
-        Blog newBlog = blogRepository.findBlogByUuid(createdBlog.getUuid());
-        System.out.println(newBlog.getAuthorId());
-        return BlogMapper.INSTANCE.blogToBlogDto(newBlog);
-    }
-
-    public void setBlogImageUrlFromTitle(Blog blog) {
-        String title = blog.getTitle();
-
-        String url = unsplash.getPhoto(title);
-        blog.setBannerImg(url);
+        return createdBlog;
     }
 
     public BlogListDto mapBlogsToBlogListDto(Page<Blog> blogs) {
         return new BlogListDto(blogs.getContent(), blogs.isLast(), blogs.getTotalPages(), blogs.getNumber());
     }
 
-    public BlogListDto getBlogs(int page) {
-        Page<Blog> blogPage = blogRepository.findAll(PageRequest.of(page, BLOG_PAGE_SIZE));
-        return mapBlogsToBlogListDto(blogPage);
+    public Page<Blog> getBlogs(int page) {
+        return blogRepository.findAll(PageRequest.of(page, BLOG_PAGE_SIZE));
     }
 
-    public BlogListDto getBlogs(int page, Long authorId) {
-        Page<Blog> blogPage = blogRepository.findAllByAuthorId(authorId, PageRequest.of(page, BLOG_PAGE_SIZE));
-        return mapBlogsToBlogListDto(blogPage);
+    public Page<Blog> getBlogs(int page, Long authorId) {
+       return blogRepository.findAllByAuthorId(authorId, PageRequest.of(page, BLOG_PAGE_SIZE));
     }
 
     public List<Blog> getBlogs(String topicSlug) {
@@ -84,14 +71,11 @@ public class BlogService {
         return blogList;
     }
 
-    public BlogDto getBlog(String blogUUID) {
-        UUID uuid = UUID.fromString(blogUUID);
-        Blog blog = blogRepository.findBlogByUuid(uuid);
-
-        return BlogMapper.INSTANCE.blogToBlogDto(blog);
+    public Blog getBlog(UUID blogUUID) {
+        return blogRepository.findBlogByUuid(blogUUID);
     }
 
-    public Blog uploadBannerImage(String blogUUID, MultipartFile file) throws Exception {
+    public String uploadBannerImage(String blogUUID, MultipartFile file) throws Exception {
         if(file.isEmpty()) throw new Exception("No file was given");
 
         String filename = blogUUID + "." + Utils.getExtensionFromFilename(file.getOriginalFilename());
@@ -99,6 +83,6 @@ public class BlogService {
 
         Blog blog = blogRepository.findBlogByUuid(UUID.fromString(blogUUID));
         blog.setBannerImg(fileUrl);
-        return blogRepository.save(blog);
+        return fileUrl;
     }
 }

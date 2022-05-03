@@ -1,6 +1,7 @@
 package com.example.blogit.blog;
 
-import com.example.blogit.user.UserDto;
+import com.example.blogit.topic.Topic;
+import com.example.blogit.user.Users;
 
 import java.util.UUID;
 
@@ -9,7 +10,8 @@ public class BlogDto {
     private String title;
     private String content;
     private String banner;
-    private UserDto author;
+    private Users author;
+    private Topic topic;
     private String slogan;
     private int likes;
 
@@ -34,7 +36,7 @@ public class BlogDto {
         return banner;
     }
 
-    public UserDto getAuthor() {
+    public Users getAuthor() {
         return author;
     }
 
@@ -62,7 +64,7 @@ public class BlogDto {
         this.banner = banner;
     }
 
-    public void setAuthor(UserDto author) {
+    public void setAuthor(Users author) {
         this.author = author;
     }
 
@@ -72,5 +74,13 @@ public class BlogDto {
 
     public void setLikes(int likes) {
         this.likes = likes;
+    }
+
+    public void setTopic(Topic topic) {
+        this.topic = topic;
+    }
+
+    public Topic getTopic() {
+        return topic;
     }
 }
