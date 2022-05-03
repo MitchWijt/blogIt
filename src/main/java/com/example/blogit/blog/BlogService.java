@@ -35,11 +35,8 @@ public class BlogService {
         return unsplash.getPhoto(query);
     }
 
-    public Blog createBlog(Blog blog) throws Exception {
-        String title = blog.getTitle();
-
-        String url = unsplash.getPhoto(title);
-        blog.setBannerImg(url);
+    public BlogDto createBlog(Blog blog) {
+        setBlogImageUrlFromTitle(blog);
 
         Blog createdBlog = blogRepository.save(blog);
 
@@ -49,7 +46,16 @@ public class BlogService {
         BlogTopicLinktable blogTopicLinktableEntry = new BlogTopicLinktable(blogId, topicId);
         blogTopicLinktableRepository.save(blogTopicLinktableEntry);
 
-        return createdBlog;
+        Blog newBlog = blogRepository.findBlogByUuid(createdBlog.getUuid());
+        System.out.println(newBlog.getAuthorId());
+        return BlogMapper.INSTANCE.blogToBlogDto(newBlog);
+    }
+
+    public void setBlogImageUrlFromTitle(Blog blog) {
+        String title = blog.getTitle();
+
+        String url = unsplash.getPhoto(title);
+        blog.setBannerImg(url);
     }
 
     public BlogListDto mapBlogsToBlogListDto(Page<Blog> blogs) {
@@ -78,9 +84,11 @@ public class BlogService {
         return blogList;
     }
 
-    public Blog getBlog(String blogUUID) {
+    public BlogDto getBlog(String blogUUID) {
         UUID uuid = UUID.fromString(blogUUID);
-        return blogRepository.findBlogByUuid(uuid);
+        Blog blog = blogRepository.findBlogByUuid(uuid);
+
+        return BlogMapper.INSTANCE.blogToBlogDto(blog);
     }
 
     public Blog uploadBannerImage(String blogUUID, MultipartFile file) throws Exception {

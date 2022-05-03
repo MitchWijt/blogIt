@@ -19,7 +19,7 @@ public class BlogController {
     }
 
     @PostMapping("/create")
-    public Blog createBlog(@Valid @RequestBody Blog blog) throws Exception {
+    public BlogDto createBlog(@Valid @RequestBody Blog blog) {
         return blogService.createBlog(blog);
     }
 
@@ -34,7 +34,7 @@ public class BlogController {
     }
 
     @GetMapping("/{uuid}")
-    public Blog getSingleBlog(@PathVariable String uuid) {
+    public BlogDto getSingleBlog(@PathVariable String uuid) {
         return blogService.getBlog(uuid);
     }
 
