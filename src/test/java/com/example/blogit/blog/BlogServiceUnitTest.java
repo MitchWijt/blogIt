@@ -40,16 +40,16 @@ public class BlogServiceUnitTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Test
-    public void shouldCreateBlog() throws Exception {
-        Blog blog = new Blog(1L, "This is a blog", "this is a test blog content", "bannerImg", 1L, LocalDateTime.now());
-
-        when(blogRepository.save(any(Blog.class))).thenReturn(blog);
-
-        Blog createdBlog = blogService.createBlog(blog);
-        assertThat(createdBlog.getUuid()).isSameAs(blog.getUuid());
-        assertThat(createdBlog.getTitle()).isSameAs(blog.getTitle());
-    }
+//    @Test
+//    public void shouldCreateBlog() throws Exception {
+//        Blog blog = new Blog(1L, "This is a blog", "this is a test blog content", "bannerImg", 1L, LocalDateTime.now());
+//
+//        when(blogRepository.save(any(Blog.class))).thenReturn(blog);
+//
+//        Blog createdBlog = blogService.createBlog(blog);
+//        assertThat(createdBlog.getUuid()).isSameAs(blog.getUuid());
+//        assertThat(createdBlog.getTitle()).isSameAs(blog.getTitle());
+//    }
 
     @Test
     public void mapBlogsToBlogListDtoShouldReturnBlogListDto() {
